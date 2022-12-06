@@ -15,7 +15,10 @@ source ~/.local/bin/virtualenvwrapper.sh
 export VIRTUALENVWRAPPER_ENV_BIN_DIR=bin
 
 ```
-
+```
+source .bashrc
+mkvirtualenv chicken_service
+```
 ***Labjack Setup***
 - install libusb-1.0 and libusb-1.0-dev
 - build and install the LabJack exodriver (https://github.com/labjack/exodriver.git)
