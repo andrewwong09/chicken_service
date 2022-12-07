@@ -1,4 +1,4 @@
-***Chicken Service***
+**Chicken Service**
 
 ***Setup Python Environment***
 ```
@@ -18,6 +18,7 @@ export VIRTUALENVWRAPPER_ENV_BIN_DIR=bin
 ```
 source .bashrc
 mkvirtualenv chicken_service
+workon chicken_service
 ```
 ***Labjack Setup***
 - install libusb-1.0 and libusb-1.0-dev
