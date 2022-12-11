@@ -21,6 +21,7 @@ class LabMotorDoor():
         self.sleep_step = 0.01
         self.steps_to_pull = None
         ret = self.dev.configU6()
+        self.door_state = None
         self.logger.info(ret)
 
     def step(self, num_steps, dir_state):
@@ -46,13 +47,24 @@ class LabMotorDoor():
 
     def open(self, rotations=8):
         self.step(rotations * 200, 1)
+        self.door_state = "openned"
 
     def close(self, rotations=8):
         self.step(rotations * 200, 0)
+        self.door_state = "closed"
+
+    def reset(self, wait_s=20):
+        # Disable enable pin so door closes by weight if it's open already
+        self.logger.info(f'Resetting {wait_s} seconds.')
+        self.dev.setDOState(ioNum=self.ENA_pin, state=1)
+        time.sleep(wait_s)
+        self.door_state = "closed"
+        self.logger.info('Done resetting.')
 
 
 if __name__ == '__main__':
     ljm = LabMotorDoor()
+    ljm.reset()
     ljm.open()
     time.sleep(10)
     ljm.close()
