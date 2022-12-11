@@ -23,7 +23,7 @@ if __name__ == '__main__':
     ljm.reset()
     
     while(True):
-        now = datetime.now()
+        now = datetime.datetime.now()
         if in_between(now.time()):
             if ljm.door_state == "closed":
                 logger.info("Openning Door")
