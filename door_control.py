@@ -22,7 +22,6 @@ class LabMotorDoor():
         self.steps_to_pull = None
         ret = self.dev.configU6()
         self.logger.info(ret)
-        
 
     def step(self, num_steps, dir_state):
         self.dev.setDOState(ioNum=self.ENA_pin,
@@ -43,14 +42,18 @@ class LabMotorDoor():
         else:
             self.dev.setDOState(ioNum=self.ENA_pin,
                                 state=1)
-
         self.logger.info('Done Stepping')
+
+    def open(self, rotations=8):
+        self.step(rotations * 200, 1)
+
+    def close(self, rotations=8):
+        self.step(rotations * 200, 0)
+
 
 if __name__ == '__main__':
     ljm = LabMotorDoor()
-    rotations = 8
-    for _ in range(5):
-        ljm.step(rotations * 200, 1)
-        time.sleep(10)
-        ljm.step(rotations * 200, 0)
+    ljm.open()
+    time.sleep(10)
+    ljm.close()
     ljm.dev.close()
