@@ -23,14 +23,20 @@ if __name__ == '__main__':
     ljm.reset()
     
     while(True):
+        now = datetime.now()
         if in_between(now.time()):
             if ljm.door_state == "closed":
                 logger.info("Openning Door")
                 ljm.open()
+            else:
+                logger.info("Door remaining closed.")
+
         else:
             if ljm.door_state == "openned":
                 logger.info("Closing Door")
                 ljm.close()
+            else:
+                logger.info("Door remaining openned.")
         time.sleep(60 * 15)
 
     # This will never be reached
