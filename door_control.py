@@ -14,30 +14,43 @@ class LabMotorDoor():
         self.logger = logging.getLogger('foobar.ljm')
         self.logger.info('LJM Created')
         self.dev = u6.U6()
-        self.PUL_pin = 0
-        self.DIR_pin = 1
+        self.DIR_pin = 0
+        self.PUL_pin = 1
+        self.ENA_pin = 2
         self.fwd_state = 0
-        self.sleep_step = 0
+        self.sleep_step = 0.01
         self.steps_to_pull = None
         ret = self.dev.configU6()
         self.logger.info(ret)
-
+        
 
     def step(self, num_steps, dir_state):
+        self.dev.setDOState(ioNum=self.ENA_pin,
+                            state=0)
         self.dev.setDOState(ioNum=self.DIR_pin,
                             state=dir_state)
         self.logger.info(f'Stepping: {dir_state} {num_steps}')
-        for _ in range(num_steps):
+        for step_index in range(num_steps):
             self.dev.setDOState(ioNum=self.PUL_pin,
                                 state=0)
             time.sleep(self.sleep_step)
             self.dev.setDOState(ioNum=self.PUL_pin,
                                 state=1)
             time.sleep(self.sleep_step)
+        if dir_state == 1:
+            self.dev.setDOState(ioNum=self.ENA_pin,
+                                state=0)
+        else:
+            self.dev.setDOState(ioNum=self.ENA_pin,
+                                state=1)
+
         self.logger.info('Done Stepping')
 
 if __name__ == '__main__':
     ljm = LabMotorDoor()
-    ljm.step(100, 0)
-    ljm.step(100, 1)
-
+    rotations = 8
+    for _ in range(5):
+        ljm.step(rotations * 200, 1)
+        time.sleep(10)
+        ljm.step(rotations * 200, 0)
+    ljm.dev.close()
