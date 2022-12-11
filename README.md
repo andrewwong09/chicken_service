@@ -17,8 +17,8 @@ export VIRTUALENVWRAPPER_ENV_BIN_DIR=bin
 ```
 ```
 source .bashrc
-mkvirtualenv chicken_service
-workon chicken_service
+mkvirtualenv chicken_door
+workon chicken_door
 ```
 ***Labjack Setup***
 - install libusb-1.0 and libusb-1.0-dev
@@ -26,3 +26,16 @@ workon chicken_service
 - install LabJacKPython (https://github.com/labjack/LabJackPython.git)
 
 
+***Service Instructions***
+- copy chicken.service file to: /home/andrew/.config/systemd/user/
+
+```
+chmod 777 chicken_service.sh
+systemctl --user enable chicken.service
+systemctl --user start chicken.service 
+sudo loginctl enable-linger andrew
+```
+- confirm andrew exists in linger dir:
+```
+ls /var/lib/systemd/linger/
+```   
