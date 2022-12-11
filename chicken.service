@@ -1,0 +1,10 @@
+[Unit]
+Description=Chicken Service
+
+[Service]
+ExecStart=/home/andrew/chicken_service/chicken_service.sh
+Restart=always
+
+[Install]
+WantedBy=default.target
+
