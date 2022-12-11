@@ -24,19 +24,18 @@ if __name__ == '__main__':
     
     while(True):
         now = datetime.datetime.now()
-        if in_between(now.time()):
+        if in_between(now.time()):  # Door should be open
             if ljm.door_state == "closed":
                 logger.info("Openning Door")
                 ljm.open()
             else:
-                logger.info("Door remaining closed.")
-
-        else:
+                logger.info("Door remaining openned.")
+        else:  # Door should be closed
             if ljm.door_state == "openned":
                 logger.info("Closing Door")
                 ljm.close()
             else:
-                logger.info("Door remaining openned.")
+                logger.info("Door remaining closed.")
         time.sleep(60 * 15)
 
     # This will never be reached
