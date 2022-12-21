@@ -45,11 +45,11 @@ class LabMotorDoor():
                                 state=1)
         self.logger.info('Done Stepping')
 
-    def open(self, rotations=8):
+    def open(self, rotations=6):
         self.step(rotations * 200, 1)
         self.door_state = "openned"
 
-    def close(self, rotations=8):
+    def close(self, rotations=6):
         self.step(rotations * 200, 0)
         self.door_state = "closed"
 

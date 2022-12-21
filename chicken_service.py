@@ -9,7 +9,7 @@ import door_control as dc
 logger.setup_logging('chicken.log')
 
 
-def in_between(now, start=datetime.time(6, 30), end=datetime.time(20, 30)):
+def in_between(now, start=datetime.time(6, 30), end=datetime.time(18, 30)):
     if start <= end:
         return start <= now < end
     else: # over midnight e.g., 23:30-04:15
