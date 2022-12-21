@@ -1,5 +1,7 @@
 **Chicken Service**
 
+![Door Opening](/images/output5.gif "Chicken Happy")
+
 ***Setup Python Environment***
 ```
 pip3 install virtualenv virtualenvwrapper
