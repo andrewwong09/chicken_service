@@ -1,3 +1,4 @@
+import os
 import time
 import logging
 
@@ -12,17 +13,20 @@ logger.setup_logging('chicken.log')
 class LabMotorDoor():
     def __init__(self):
         self.logger = logging.getLogger('foobar.ljm')
-        self.logger.info('LJM Created')
-        self.dev = u6.U6()
+        self.logger.info('LJM Door Initiating...')
+        try:
+            self.dev = u6.U6()
+            ret = self.dev.configU6()
+        except Exception as err:
+            self.logger.error(f'Could not open LJM device, rebooting in 10 minutes: {err}')
+            time.sleep(600)
+            os.system('sudo shutdown -r now')
+        self.logger.info(f'We are initiated: {ret}')
         self.DIR_pin = 0
         self.PUL_pin = 1
         self.ENA_pin = 2
-        self.fwd_state = 0
         self.sleep_step = 0.01
-        self.steps_to_pull = None
-        ret = self.dev.configU6()
         self.door_state = None
-        self.logger.info(ret)
 
     def step(self, num_steps, dir_state):
         self.dev.setDOState(ioNum=self.ENA_pin,
@@ -47,13 +51,13 @@ class LabMotorDoor():
 
     def open(self, rotations=6):
         self.step(rotations * 200, 1)
-        self.door_state = "openned"
+        self.door_state = "opened"
 
     def close(self, rotations=6):
         self.step(rotations * 200, 0)
         self.door_state = "closed"
 
-    def reset(self, wait_s=20):
+    def reset(self, wait_s=60):
         # Disable enable pin so door closes by weight if it's open already
         self.logger.info(f'Resetting {wait_s} seconds.')
         self.dev.setDOState(ioNum=self.ENA_pin, state=1)

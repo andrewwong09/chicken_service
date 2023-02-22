@@ -9,7 +9,7 @@ import door_control as dc
 logger.setup_logging('chicken.log')
 
 
-def in_between(now, start=datetime.time(6, 30), end=datetime.time(18, 30)):
+def in_between(now, start=datetime.time(6, 30), end=datetime.time(19, 30)):
     if start <= end:
         return start <= now < end
     else: # over midnight e.g., 23:30-04:15
@@ -29,9 +29,9 @@ if __name__ == '__main__':
                 logger.info("Openning Door")
                 ljm.open()
             else:
-                logger.info("Door remaining openned.")
+                logger.info("Door remaining opened.")
         else:  # Door should be closed
-            if ljm.door_state == "openned":
+            if ljm.door_state == "opened":
                 logger.info("Closing Door")
                 ljm.close()
             else:
