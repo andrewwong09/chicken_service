@@ -2,6 +2,8 @@ import time
 import datetime
 import logging
 
+from astral import Astral
+
 import logger as logger
 import door_control as dc
 
@@ -9,11 +11,22 @@ import door_control as dc
 logger.setup_logging('chicken.log')
 
 
-def in_between(now, start=datetime.time(6, 30), end=datetime.time(19, 30)):
+def in_between(now, start=None, end=None):
+    if start is None or end is None:
+        city_name = 'San Francisco'
+        a = Astral()
+        a.solar_depression = 'civil'
+        city = a[city_name]
+        sun = city.sun(date=now, local=True)
+        if start is None:
+            start = sun['sunrise']
+        if end is None:
+            end = sun['sunset'] + datetime.timedelta(hours=1) 
+
     if start <= end:
-        return start <= now < end
+        return start <= now.astimezone() < end
     else: # over midnight e.g., 23:30-04:15
-        return start <= now or now < end
+        return start <= now.astimezone() or now.astimezone() < end
 
 
 if __name__ == '__main__':
@@ -24,7 +37,7 @@ if __name__ == '__main__':
     
     while(True):
         now = datetime.datetime.now()
-        if in_between(now.time()):  # Door should be open
+        if in_between(now):  # Door should be open
             if ljm.door_state == "closed":
                 logger.info("Openning Door")
                 ljm.open()

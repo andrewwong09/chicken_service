@@ -21,6 +21,8 @@ export VIRTUALENVWRAPPER_ENV_BIN_DIR=bin
 source .bashrc
 mkvirtualenv chicken_door
 workon chicken_door
+
+pip install astral==1.2
 ```
 ***Labjack Setup***
 - install libusb-1.0 and libusb-1.0-dev
